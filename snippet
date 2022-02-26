@@ -1,0 +1,83 @@
+function randomMon(type){
+  let ranMon = type[Math.floor(Math.random()*type.length)]
+  return ranMon
+}
+
+const goblins = [
+  {
+    name: 'Goblin Fighter',
+    hp: 20
+  },
+  {
+    name: 'Goblin Rogue',
+    hp: 15
+  },
+  {
+    name: 'Goblin Wizard',
+    hp: 10
+  }
+]
+
+
+class MonCard extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      current: randomMon(goblins),
+      hp: 0,
+      key: this.props.key,
+      stunned: false
+    }
+
+    this._damage = this._damage.bind(this)
+    this._stunned = this._stunned.bind(this)
+
+    this.name = this.state.current.name
+    this.state.hp = this.state.current.hp
+
+  }
+
+  _damage(){
+    this.setState({
+      hp: this.state.hp - 5
+    })
+  }
+
+  _stunned(){
+    this.setState({
+      stunned: true
+    })
+  }
+
+  NewComponent(){
+    return(
+      <p>Stunned!</p>
+    )
+  }
+
+  render() {
+    return(
+      <div>
+        <h1>{this.name}</h1>
+        <h3>{this.state.hp}</h3>
+        {this.state.stunned ?
+          <this.NewComponent />:
+          null
+        }
+        <button onClick={this._stunned}>Stun</button>
+        <button onClick={this._damage}>Attack</button>
+      </div>
+    )
+    
+  }
+}
+
+class Field extends React.Component{
+  render(){
+    return(
+      <div>
+        {this.props.children}
+      </div>
+    )
+  }
+}
